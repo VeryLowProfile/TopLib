@@ -11,15 +11,15 @@ development of the new Topcast control board.
 The Library is a Work in progress
 
 ## **Lib Functions**
-ModBus_RTU (Freemodbus HardFork)
-ModBus_TCB (Wiznet driver)(Freemodbus HardFork)
-cycleTime
-flash
-rtc
-ADC
-DI
-DQ
-ENC
-I2C_LCD
-PID
-PWM
+- ModBus_RTU (Freemodbus HardFork)
+- ModBus_TCB (Wiznet driver)(Freemodbus HardFork)
+- cycleTime
+- flash
+- rtc
+- ADC
+- DI
+- DQ
+- ENC
+- I2C_LCD
+- PID
+- PWM
