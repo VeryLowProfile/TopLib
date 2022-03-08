@@ -12,7 +12,7 @@
 
 /* Defines -----------------------------------------------------------*/
 //Configuration
-#define MAX_DQ_CHANNELS 3
+#define MAX_DQ_OUT 3
 
 //Output Name
 #define DQ_0 0
@@ -39,7 +39,7 @@ struct DQ_channel
 };
 
 //Functions
-void Scan_DQ_Init(void);
-void Scan_DQ_Process_Channel(uint8_t channel);
+void Scan_DQ_Init(uint8_t dqNumber, uint8_t port, uint8_t pin);
+void Scan_DQ_Process_Number(uint8_t dqNumber);
 void Scan_DQ_Main(void);
 

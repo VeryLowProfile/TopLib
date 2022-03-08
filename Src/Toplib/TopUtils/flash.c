@@ -1,18 +1,15 @@
 /**
-  ******************************************************************************
-  * @file           : flash.c
-  * @author         : Davide
-  * @date           : 21 gen 2022
-  ******************************************************************************
-*/
+ ******************************************************************************
+ * @file           : flash.c
+ * @author         : Davide
+ * @date           : 21 gen 2022
+ ******************************************************************************
+ */
 
-//-----------------INCLUDE----------------------------------------------------//
-#include "stm32g4xx_hal.h"
-
-//-----------------PVT_INCLUDE------------------------------------------------//
+/* Includes ------------------------------------------------------------------*/
 #include "flash.h"
 
-//-----------------FUNCTIONS--------------------------------------------------//
+/* Functions -----------------------------------------------------------*/
 FlashError FLASH_Init( void ){
 
 	//Enable RCC CLK
@@ -25,12 +22,12 @@ FlashError FLASH_Init( void ){
 	//Unlock FLASH
 	errorCode = HAL_FLASH_Unlock();
 
-			if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-				//errorCode = UNLOCK error
-				errorCode = FLASH_UNLOCK_ERROR;
+		//errorCode = UNLOCK error
+		errorCode = FLASH_UNLOCK_ERROR;
 
-			}
+	}
 
 	//Clear pending flags
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
@@ -38,12 +35,12 @@ FlashError FLASH_Init( void ){
 	//Lock FLASH
 	errorCode = HAL_FLASH_Lock();
 
-			if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
 
-				//errorCode = LOCK error
-				errorCode = FLASH_LOCK_ERROR;
+		//errorCode = LOCK error
+		errorCode = FLASH_LOCK_ERROR;
 
-			}
+	}
 
 	return errorCode;
 
@@ -56,12 +53,12 @@ FlashError FLASH_ErasePage_with_address(uint32_t address){
 	//Unlock FLASH
 	errorCode = HAL_FLASH_Unlock();
 
-			if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-				//errorCode = UNLOCK error
-				errorCode = FLASH_UNLOCK_ERROR;
+		//errorCode = UNLOCK error
+		errorCode = FLASH_UNLOCK_ERROR;
 
-			}
+	}
 
 	//Clear pending flags
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
@@ -72,10 +69,10 @@ FlashError FLASH_ErasePage_with_address(uint32_t address){
 	//Configure erase structure
 	FLASH_EraseInitTypeDef flash_erase_init =
 	{
-	.TypeErase = FLASH_TYPEERASE_PAGES,
-	.Banks = FLASH_BANK,
-	.Page = pageCalc,
-	.NbPages = 1
+			.TypeErase = FLASH_TYPEERASE_PAGES,
+			.Banks = FLASH_BANK,
+			.Page = pageCalc,
+			.NbPages = 1
 	};
 
 	uint32_t flash_page_erase_error = 0;
@@ -83,22 +80,22 @@ FlashError FLASH_ErasePage_with_address(uint32_t address){
 	//ERASE
 	errorCode = HAL_FLASHEx_Erase(&flash_erase_init, &flash_page_erase_error);
 
-			if (errorCode != FLASH_NO_ERROR){ //ERASE ERROR
+	if (errorCode != FLASH_NO_ERROR){ //ERASE ERROR
 
-				//errorCode = ERASE error
-				errorCode = FLASH_ERASE_ERROR;
+		//errorCode = ERASE error
+		errorCode = FLASH_ERASE_ERROR;
 
-			}
+	}
 
 	//Lock FLASH
 	errorCode = HAL_FLASH_Lock();
 
-			if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
 
-				//errorCode = LOCK error
-				errorCode = FLASH_LOCK_ERROR;
+		//errorCode = LOCK error
+		errorCode = FLASH_LOCK_ERROR;
 
-			}
+	}
 
 	return errorCode;
 
@@ -122,12 +119,12 @@ FlashError FLASH_ErasePage_with_pageNb(uint32_t pageNb){
 		//Unlock FLASH
 		errorCode = HAL_FLASH_Unlock();
 
-				if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+		if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-					//errorCode = UNLOCK error
-					errorCode = FLASH_UNLOCK_ERROR;
+			//errorCode = UNLOCK error
+			errorCode = FLASH_UNLOCK_ERROR;
 
-				}
+		}
 
 		//Clear pending flags
 		__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
@@ -135,10 +132,10 @@ FlashError FLASH_ErasePage_with_pageNb(uint32_t pageNb){
 		//Configure erase structure
 		FLASH_EraseInitTypeDef flash_erase_init =
 		{
-		.TypeErase = FLASH_TYPEERASE_PAGES,
-		.Banks = FLASH_BANK,
-		.Page = pageNb,
-		.NbPages = 1
+				.TypeErase = FLASH_TYPEERASE_PAGES,
+				.Banks = FLASH_BANK,
+				.Page = pageNb,
+				.NbPages = 1
 		};
 
 		uint32_t flash_page_erase_error = 0;
@@ -146,22 +143,22 @@ FlashError FLASH_ErasePage_with_pageNb(uint32_t pageNb){
 		//ERASE
 		errorCode = HAL_FLASHEx_Erase(&flash_erase_init, &flash_page_erase_error);
 
-				if (errorCode != FLASH_NO_ERROR){ //ERASE ERROR
+		if (errorCode != FLASH_NO_ERROR){ //ERASE ERROR
 
-					//errorCode = ERASE error
-					errorCode = FLASH_ERASE_ERROR;
+			//errorCode = ERASE error
+			errorCode = FLASH_ERASE_ERROR;
 
-				}
+		}
 
 		//Lock FLASH
 		errorCode = HAL_FLASH_Lock();
 
-				if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+		if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
 
-					//errorCode = LOCK error
-					errorCode = FLASH_LOCK_ERROR;
+			//errorCode = LOCK error
+			errorCode = FLASH_LOCK_ERROR;
 
-				}
+		}
 	}
 
 	return errorCode;
@@ -175,32 +172,32 @@ FlashError FLASH_WriteSingle(uint32_t address, uint64_t data){
 	//Unlock FLASH
 	errorCode = HAL_FLASH_Unlock();
 
-			if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-				//errorCode = UNLOCK error
-				errorCode = FLASH_UNLOCK_ERROR;
+		//errorCode = UNLOCK error
+		errorCode = FLASH_UNLOCK_ERROR;
 
-			}
+	}
 
 	//WRITE
 	errorCode = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, address, (uint64_t)(data));
 
-			if (errorCode != FLASH_NO_ERROR){ //WRITE ERROR
+	if (errorCode != FLASH_NO_ERROR){ //WRITE ERROR
 
-				//errorCode = WRITE error
-				errorCode = FLASH_WRITE_ERROR;
+		//errorCode = WRITE error
+		errorCode = FLASH_WRITE_ERROR;
 
-			}
+	}
 
 	//Lock FLASH
 	errorCode = HAL_FLASH_Lock();
 
-			if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
 
-				//errorCode = LOCK error
-				errorCode = FLASH_LOCK_ERROR;
+		//errorCode = LOCK error
+		errorCode = FLASH_LOCK_ERROR;
 
-			}
+	}
 
 	return errorCode;
 
@@ -213,12 +210,12 @@ uint64_t FLASH_ReadSingle(uint32_t address){
 	//Unlock FLASH
 	errorCode = HAL_FLASH_Unlock();
 
-			if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-				//errorCode = UNLOCK error
-				errorCode = FLASH_UNLOCK_ERROR;
+		//errorCode = UNLOCK error
+		errorCode = FLASH_UNLOCK_ERROR;
 
-			}
+	}
 
 	//READ
 	uint64_t *value_read;
@@ -227,12 +224,12 @@ uint64_t FLASH_ReadSingle(uint32_t address){
 	//Lock FLASH
 	errorCode = HAL_FLASH_Lock();
 
-			if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
 
-				//errorCode = LOCK error
-				errorCode = FLASH_LOCK_ERROR;
+		//errorCode = LOCK error
+		errorCode = FLASH_LOCK_ERROR;
 
-			}
+	}
 
 	return *value_read;
 
@@ -245,12 +242,12 @@ FlashError FLASH_EraseAll( void ){
 	//Unlock FLASH
 	errorCode = HAL_FLASH_Unlock();
 
-			if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-				//errorCode = UNLOCK error
-				errorCode = FLASH_UNLOCK_ERROR;
+		//errorCode = UNLOCK error
+		errorCode = FLASH_UNLOCK_ERROR;
 
-			}
+	}
 
 	//Clear pending flags
 	__HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
@@ -258,10 +255,10 @@ FlashError FLASH_EraseAll( void ){
 	//Configure erase structure
 	FLASH_EraseInitTypeDef flash_erase_init =
 	{
-	.TypeErase = FLASH_TYPEERASE_PAGES,
-	.Banks = FLASH_BANK,
-	.Page = FLASH_PAGE_OFFSET,
-	.NbPages = (FLASH_MAX_PAGE - FLASH_PAGE_OFFSET)
+			.TypeErase = FLASH_TYPEERASE_PAGES,
+			.Banks = FLASH_BANK,
+			.Page = FLASH_PAGE_OFFSET,
+			.NbPages = (FLASH_MAX_PAGE - FLASH_PAGE_OFFSET)
 	};
 
 	uint32_t flash_page_erase_error = 0;
@@ -269,22 +266,22 @@ FlashError FLASH_EraseAll( void ){
 	//ERASE
 	errorCode = HAL_FLASHEx_Erase(&flash_erase_init, &flash_page_erase_error);
 
-			if (errorCode != FLASH_NO_ERROR){ //ERASE ERROR
+	if (errorCode != FLASH_NO_ERROR){ //ERASE ERROR
 
-				//errorCode = ERASE error
-				errorCode = FLASH_ERASE_ERROR;
+		//errorCode = ERASE error
+		errorCode = FLASH_ERASE_ERROR;
 
-			}
+	}
 
 	//Lock FLASH
 	errorCode = HAL_FLASH_Lock();
 
-			if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+	if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
 
-				//errorCode = LOCK error
-				errorCode = FLASH_LOCK_ERROR;
+		//errorCode = LOCK error
+		errorCode = FLASH_LOCK_ERROR;
 
-			}
+	}
 
 	return errorCode;
 
@@ -292,54 +289,54 @@ FlashError FLASH_EraseAll( void ){
 
 FlashError FLASH_WriteAll(FLASH_Data_type data){
 
-		uint32_t errorCode = FLASH_NO_ERROR;
+	uint32_t errorCode = FLASH_NO_ERROR;
 
-		if (FLASH_START_ADDR + DOUBLEWORD_BYTES_N*MAX_NB_OBJ*MAX_NB_PROP < FLASH_END_ADDR){
+	if (FLASH_START_ADDR + DOUBLEWORD_BYTES_N*MAX_NB_OBJ*MAX_NB_PROP < FLASH_END_ADDR){
 
-					//Unlock FLASH
-					errorCode = HAL_FLASH_Unlock();
+		//Unlock FLASH
+		errorCode = HAL_FLASH_Unlock();
 
-							if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
+		if (errorCode != FLASH_NO_ERROR){ //UNLOCK ERROR
 
-								//errorCode = UNLOCK error
-								errorCode = FLASH_UNLOCK_ERROR;
-
-							}
-
-					//WRITE
-
-					for (int i = 0; i < MAX_NB_OBJ; i++){		//cycle trough OBJECTS
-						for (int j = 0; j < MAX_NB_PROP; j++){	//cycle trough PROPERTIES
-
-									errorCode = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLASH_START_ADDR + DOUBLEWORD_BYTES_N*MAX_NB_PROP*i + DOUBLEWORD_BYTES_N*j, (uint64_t)(data[i][j]));
-
-											if (errorCode != FLASH_NO_ERROR){ //WRITE ERROR
-
-												//errorCode = WRITE error
-												errorCode = FLASH_WRITE_ERROR;
-
-											}
-						}
-					}
-
-					//Lock FLASH
-					errorCode = HAL_FLASH_Lock();
-
-							if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
-
-								//errorCode = LOCK error
-								errorCode = FLASH_LOCK_ERROR;
-
-							}
-		}
-		else{
-
-			//errorCode = WRITE ALL error
-			errorCode = FLASH_WRITE_ALL_ERROR;
+			//errorCode = UNLOCK error
+			errorCode = FLASH_UNLOCK_ERROR;
 
 		}
 
-		return errorCode;
+		//WRITE
+
+		for (int i = 0; i < MAX_NB_OBJ; i++){		//cycle trough OBJECTS
+			for (int j = 0; j < MAX_NB_PROP; j++){	//cycle trough PROPERTIES
+
+				errorCode = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, FLASH_START_ADDR + DOUBLEWORD_BYTES_N*MAX_NB_PROP*i + DOUBLEWORD_BYTES_N*j, (uint64_t)(data[i][j]));
+
+				if (errorCode != FLASH_NO_ERROR){ //WRITE ERROR
+
+					//errorCode = WRITE error
+					errorCode = FLASH_WRITE_ERROR;
+
+				}
+			}
+		}
+
+		//Lock FLASH
+		errorCode = HAL_FLASH_Lock();
+
+		if (errorCode != FLASH_NO_ERROR){ //LOCK ERROR
+
+			//errorCode = LOCK error
+			errorCode = FLASH_LOCK_ERROR;
+
+		}
+	}
+	else{
+
+		//errorCode = WRITE ALL error
+		errorCode = FLASH_WRITE_ALL_ERROR;
+
+	}
+
+	return errorCode;
 
 }
 

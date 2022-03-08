@@ -5,6 +5,7 @@
   * @date           : 21 gen 2022
   ******************************************************************************
 */
+
 //-----------------INFORMATION------------------------------------------------//
 //
 // FLASH_START_ADDR (OFFSET = PAGE 50 -> address 0x08019000)
@@ -87,7 +88,7 @@
 #define MAX_NB_OBJ 					16 																	//max number of object to be stored
 #define MAX_NB_PROP					32   																//max number of properties for every object to be stored
 
-//-----------------TYPEDEF-----------------------------------------------------//
+/* Declarations -----------------------------------------------------------*/
 typedef enum
 {
 	FLASH_NO_ERROR,
@@ -101,7 +102,7 @@ typedef enum
 
 typedef uint64_t FLASH_Data_type[MAX_NB_OBJ][MAX_NB_PROP]; //Define data structure for data to be written
 
-//-----------------PROTOTYPES--------------------------------------------------//
+/* Prototypes -----------------------------------------------------------*/
 FlashError Flash_Init( void );
 FlashError Flash_ErasePage_with_address(uint32_t address);
 FlashError Flash_ErasePage_with_pageNb(uint32_t pageNb);

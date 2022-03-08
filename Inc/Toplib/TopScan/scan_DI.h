@@ -14,10 +14,14 @@
 //Generic
 
 //Configuration
-#define MAX_DI_CHANNELS 3
+#define MAX_DI_INPUT 5
 
 //Input Name
-#define DI_SWITCH 0
+#define DI_DEVICE_1 0
+#define DI_DEVICE_2 1
+#define DI_DEVICE_3 2
+#define DI_DEVICE_4 3
+#define DI_DEVICE_5 4
 
 /* Declarations -----------------------------------------------------------*/
 //Variables
@@ -50,7 +54,7 @@ struct DI_channel
 };
 
 //Functions
-void Scan_DI_Init(void);
-void Scan_DI_Process_Channel(uint8_t channel);
+void Scan_DI_Init(uint8_t diNumber, uint8_t port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles);
+void Scan_DI_Process_Number(uint8_t diNumber);
 void Scan_DI_Main(void);
 

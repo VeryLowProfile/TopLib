@@ -27,26 +27,30 @@
 #define TC_TYPE_N  4			// Thermocouple Type N
 #define TC_TYPE_C  5			// Thermocouple Type C
 
-//Input Name ADC_1
+//Adc Number
+#define ADC_1 1
+#define ADC_2 2
+
+//Input Name
 #define ADC_1_SENSOR_5 0
 #define ADC_1_SENSOR_8 1
-
-//Input Name ADC_2
-#define ADC_2_SENSOR_3 0
-#define ADC_2_SENSOR_4 1
+#define ADC_2_SENSOR_3 2
+#define ADC_2_SENSOR_4 3
 
 /* Declarations -----------------------------------------------------------*/
 //Variables
-struct ADC_channelConfig
+struct ADC_Config
 {
 	uint8_t isUsed;
+	uint8_t adcNumber;
+	uint8_t adcChannel;
 	uint8_t sensorType;
 	uint8_t filterCostant;
 	float linearScaling;
 	float linearOffset;
 };
 
-struct ADC_channelStatus
+struct ADC_Status
 {
 	int sampleNumber;
 	int filteredRawValue;
@@ -54,17 +58,16 @@ struct ADC_channelStatus
 	float actualCondValue;
 };
 
-struct ADC_channel
+struct ADC
 {
-	struct ADC_channelConfig channelConfig;
-	struct ADC_channelStatus channelValue;
+	struct ADC_Config Config;
+	struct ADC_Status Status;
 };
 
 /* Prototypes -----------------------------------------------------------*/
-void Scan_ADC_1_Init(ADC_HandleTypeDef *hadc);
-void Scan_ADC_2_Init(ADC_HandleTypeDef *hadc);
-void Scan_ADC_1_Process_Channel(uint8_t channel);
-void Scan_ADC_2_Process_Channel(uint8_t channel);
-void Scan_ADC_1_Main(void);
-void Scan_ADC_2_Main(void);
+void Scan_ADC_Init(uint8_t sensorNumber, uint_8 adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset);
+void Scan_ADC_Start(ADC_HandleTypeDef *hadc1, ADC_HandleTypeDef *hadc2);
+void Scan_ADC_Process_Channel(uint8_t sensorNumber);
+void Scan_ADC_Main(void);
+
 

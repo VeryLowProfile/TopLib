@@ -12,35 +12,25 @@
 /* Defines -----------------------------------------------------------*/
 
 /* Declarations -----------------------------------------------------------*/
-struct DQ_channel DQ[MAX_DQ_CHANNELS];
+struct DQ_channel DQ[MAX_DQ_OUT];
 
 /* Body -----------------------------------------------------------*/
-void Scan_DQ_Init(void)
+void Scan_DQ_Init(uint8_t dqNumber, uint8_t port, uint8_t pin)
 {
-	//DQ_0
-	DQ[DQ_0].channelConfig.port = PORT_B;
-	DQ[DQ_0].channelConfig.pin = PIN_14;
-
-	//DQ_1
-	DQ[DQ_1].channelConfig.port = PORT_B;
-	DQ[DQ_1].channelConfig.pin = PIN_15;
-
-	//DQ_2
-	DQ[DQ_2].channelConfig.port = PORT_A;
-	DQ[DQ_2].channelConfig.pin = PIN_5;
-
+	DQ[dqNumber].channelConfig.port = port;
+	DQ[dqNumber].channelConfig.pin = pin;
 }
 
-void Scan_DQ_Process_Channel(uint8_t channel)
+void Scan_DQ_Process_Number(uint8_t dqNumber)
 {
-	HAL_GPIO_WritePin(DQ[channel].channelConfig.port, DQ[channel].channelConfig.pin, DQ[channel].channelCommand.command);
+	HAL_GPIO_WritePin(DQ[dqNumber].channelConfig.port, DQ[dqNumber].channelConfig.pin, DQ[dqNumber].channelCommand.command);
 }
 
 void Scan_DQ_Main(void)
 {
 	int i;
-	for (i = 0; i < MAX_DQ_CHANNELS; ++i)
+	for (i = 0; i < MAX_DQ_OUT; ++i)
 	{
-		Scan_DQ_Process_Channel(i);
+		Scan_DQ_Process_Number(i);
 	}
 }

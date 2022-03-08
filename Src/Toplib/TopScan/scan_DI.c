@@ -12,69 +12,68 @@
 /* Defines -----------------------------------------------------------*/
 
 /* Declarations -----------------------------------------------------------*/
-struct DI_channel DI[MAX_DI_CHANNELS];
+struct DI_channel DI[MAX_DI_INPUT];
 
 /* Body -----------------------------------------------------------*/
-void Scan_DI_Init(void)
+void Scan_DI_Init(uint8_t diNumber, uint8_t port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles)
 {
-	//DI_0
-	DI[DI_SWITCH].channelConfig.port = PORT_B;
-	DI[DI_SWITCH].channelConfig.pin = PIN_6;
-	DI[DI_SWITCH].channelConfig.isDebounce = NO;
-	DI[DI_SWITCH].channelConfig.debounceCycles = 0;
+	DI[diNumber].channelConfig.port = port;
+	DI[diNumber].channelConfig.pin = pin;
+	DI[diNumber].channelConfig.isDebounce = isDebounce;
+	DI[diNumber].channelConfig.debounceCycles = debounceCycles;
 }
 
-void Scan_DI_Process_Channel(uint8_t channel)
+void Scan_DI_Process_Number(uint8_t diNumber)
 {
-	if (DI[channel].channelConfig.isDebounce)
+	if (DI[diNumber].channelConfig.isDebounce)
 	{
-		if (DI[channel].channelStatus.status)
+		if (DI[diNumber].channelStatus.status)
 		{
-			if (!HAL_GPIO_ReadPin(DI[channel].channelConfig.port, DI[channel].channelConfig.pin))
+			if (!HAL_GPIO_ReadPin(DI[diNumber].channelConfig.port, DI[diNumber].channelConfig.pin))
 			{
-				if (DI[channel].channelAux.debounceCounter < DI[channel].channelConfig.debounceCycles)
+				if (DI[diNumber].channelAux.debounceCounter < DI[diNumber].channelConfig.debounceCycles)
 				{
-					DI[channel].channelAux.debounceCounter++;
+					DI[diNumber].channelAux.debounceCounter++;
 				}
 				else
 				{
-					DI[channel].channelAux.debounceCounter = 0;
-					DI[channel].channelStatus.status = OFF;
+					DI[diNumber].channelAux.debounceCounter = 0;
+					DI[diNumber].channelStatus.status = OFF;
 				}
 			}
 		}
 		else
 		{
-			if (HAL_GPIO_ReadPin(DI[channel].channelConfig.port, DI[channel].channelConfig.pin))
+			if (HAL_GPIO_ReadPin(DI[diNumber].channelConfig.port, DI[diNumber].channelConfig.pin))
 			{
-				if (DI[channel].channelAux.debounceCounter < DI[channel].channelConfig.debounceCycles)
+				if (DI[diNumber].channelAux.debounceCounter < DI[diNumber].channelConfig.debounceCycles)
 				{
-					DI[channel].channelAux.debounceCounter++;
+					DI[diNumber].channelAux.debounceCounter++;
 				}
 				else
 				{
-					DI[channel].channelAux.debounceCounter = 0;
-					DI[channel].channelStatus.status = ON;
+					DI[diNumber].channelAux.debounceCounter = 0;
+					DI[diNumber].channelStatus.status = ON;
 				}
 			}
 		}
 	}
 	else
 	{
-		DI[channel].channelStatus.status = HAL_GPIO_ReadPin(DI[channel].channelConfig.port, DI[channel].channelConfig.pin);
+		DI[diNumber].channelStatus.status = HAL_GPIO_ReadPin(DI[diNumber].channelConfig.port, DI[diNumber].channelConfig.pin);
 	}
 
 	//Edges
-	DI[channel].channelStatus.rStatus = !DI[channel].channelStatus.prevStatus && HAL_GPIO_ReadPin(DI[channel].channelConfig.port, DI[channel].channelConfig.pin);
-	DI[channel].channelStatus.fStatus = DI[channel].channelStatus.prevStatus && !HAL_GPIO_ReadPin(DI[channel].channelConfig.port, DI[channel].channelConfig.pin);
-	DI[channel].channelStatus.prevStatus = HAL_GPIO_ReadPin(DI[channel].channelConfig.port, DI[channel].channelConfig.pin);
+	DI[diNumber].channelStatus.rStatus = !DI[diNumber].channelStatus.prevStatus && HAL_GPIO_ReadPin(DI[diNumber].channelConfig.port, DI[diNumber].channelConfig.pin);
+	DI[diNumber].channelStatus.fStatus = DI[diNumber].channelStatus.prevStatus && !HAL_GPIO_ReadPin(DI[diNumber].channelConfig.port, DI[diNumber].channelConfig.pin);
+	DI[diNumber].channelStatus.prevStatus = HAL_GPIO_ReadPin(DI[diNumber].channelConfig.port, DI[diNumber].channelConfig.pin);
 }
 
 void Scan_DI_Main(void)
 {
 	int i;
-	for (i = 0; i < MAX_DI_CHANNELS; ++i)
+	for (i = 0; i < MAX_DI_INPUT; ++i)
 	{
-		Scan_DI_Process_Channel(i);
+		Scan_DI_Process_Number(i);
 	}
 }
