@@ -39,7 +39,7 @@ struct DQ_channel
 };
 
 //Functions
-void Scan_DQ_Init(uint8_t dqNumber, uint8_t port, uint8_t pin);
+void Scan_DQ_Init(uint8_t dqNumber, GPIO_TypeDef* port, uint8_t pin);
 void Scan_DQ_Process_Number(uint8_t dqNumber);
 void Scan_DQ_Main(void);
 

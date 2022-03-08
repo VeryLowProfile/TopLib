@@ -25,15 +25,15 @@ uint32_t ADC_1_DMA_Buffer[MAX_DMA_BUFFER_LENGHT_CHANNEL][MAX_ADC_1_CHANNELS];
 uint32_t ADC_2_DMA_Buffer[MAX_DMA_BUFFER_LENGHT_CHANNEL][MAX_ADC_2_CHANNELS];
 
 /* Functions -----------------------------------------------------------*/
-void Scan_ADC_Init(uint8_t sensorNumber, uint_8 adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset)
+void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset)
 {
-	ADC[sensorNumber].channelConfig.isUsed = YES;
-	ADC[sensorNumber].channelConfig.adcNumber = adcNumber;
-	ADC[sensorNumber].channelConfig.adcChannel = adcChannel;
-	ADC[sensorNumber].channelConfig.filterCostant = filterCostant;
-	ADC[sensorNumber].channelConfig.linearOffset = linearOffset;
-	ADC[sensorNumber].channelConfig.linearScaling = linearScaling;
-	ADC[sensorNumber].channelConfig.sensorType = sensorType;
+	ADC[sensorNumber].Config.isUsed = YES;
+	ADC[sensorNumber].Config.adcNumber = adcNumber;
+	ADC[sensorNumber].Config.adcChannel = adcChannel;
+	ADC[sensorNumber].Config.filterCostant = filterCostant;
+	ADC[sensorNumber].Config.linearOffset = linearOffset;
+	ADC[sensorNumber].Config.linearScaling = linearScaling;
+	ADC[sensorNumber].Config.sensorType = sensorType;
 }
 
 void Scan_ADC_Start(ADC_HandleTypeDef *hadc1, ADC_HandleTypeDef *hadc2)
@@ -52,42 +52,42 @@ void Scan_ADC_Start(ADC_HandleTypeDef *hadc1, ADC_HandleTypeDef *hadc2)
 
 void Scan_ADC_Process_Channel(uint8_t sensorNumber)
 {
-	if (ADC[sensorNumber].channelConfig.isUsed)
+	if (ADC[sensorNumber].Config.isUsed)
 	{
 		//Grab Sample From Ram and made a medium raw value based on the filter constant;
 		int i = 0;
-		ADC[sensorNumber].channelValue.prevCondValue = ADC[sensorNumber].channelValue.actualCondValue;
-		ADC[sensorNumber].channelValue.filteredRawValue = 0;
-		ADC[sensorNumber].channelValue.actualCondValue = 0;
-		ADC[sensorNumber].channelValue.sampleNumber = 0;
-		for (i = 0; i < MAX_DMA_BUFFER_LENGHT_CHANNEL; i = i + ADC[sensorNumber].channelConfig.filterCostant)
+		ADC[sensorNumber].Status.prevCondValue = ADC[sensorNumber].Status.actualCondValue;
+		ADC[sensorNumber].Status.filteredRawValue = 0;
+		ADC[sensorNumber].Status.actualCondValue = 0;
+		ADC[sensorNumber].Status.sampleNumber = 0;
+		for (i = 0; i < MAX_DMA_BUFFER_LENGHT_CHANNEL; i = i + ADC[sensorNumber].Config.filterCostant)
 		{
-			if (ADC[sensorNumber].channelValue.adcNumber == ADC_1){
-				ADC[sensorNumber].channelValue.filteredRawValue += ADC_1_DMA_Buffer[i][ADC[sensorNumber].channelConfig.adcChannel];
+			if (ADC[sensorNumber].Config.adcNumber == ADC_1){
+				ADC[sensorNumber].Status.filteredRawValue += ADC_1_DMA_Buffer[i][ADC[sensorNumber].Config.adcChannel];
 			}
-			else if (ADC[sensorNumber].channelValue.adcNumber == ADC_2) {
-				ADC[sensorNumber].channelValue.filteredRawValue += ADC_2_DMA_Buffer[i][ADC[sensorNumber].channelConfig.adcChannel];
+			else if (ADC[sensorNumber].Config.adcNumber == ADC_2) {
+				ADC[sensorNumber].Status.filteredRawValue += ADC_2_DMA_Buffer[i][ADC[sensorNumber].Config.adcChannel];
 			}
-			ADC[sensorNumber].channelValue.sampleNumber++;
+			ADC[sensorNumber].Status.sampleNumber++;
 		}
-		ADC[sensorNumber].channelValue.filteredRawValue = ADC[sensorNumber].channelValue.filteredRawValue / ADC[sensorNumber].channelValue.sampleNumber;
+		ADC[sensorNumber].Status.filteredRawValue = ADC[sensorNumber].Status.filteredRawValue / ADC[sensorNumber].Status.sampleNumber;
 
 		//Linearization of the medium raw value
 		//LINEAR
-		if (ADC[sensorNumber].channelConfig.sensorType == LINEAR)
+		if (ADC[sensorNumber].Config.sensorType == LINEAR)
 		{
-			ADC[sensorNumber].channelValue.actualCondValue = (ADC[sensorNumber].channelValue.filteredRawValue * ADC[sensorNumber].channelConfig.linearScaling) + ADC[sensorNumber].channelConfig.linearOffset;
+			ADC[sensorNumber].Status.actualCondValue = (ADC[sensorNumber].Status.filteredRawValue * ADC[sensorNumber].Config.linearScaling) + ADC[sensorNumber].Config.linearOffset;
 		}
 		//OTHERS
 		else
 		{
 			int k, x;
 			float q, m;
-	 		k = ADC[sensorNumber].channelValue.filteredRawValue / MAX_LOOKUP_TABLE_SEGMENT;
-			x = ADC[sensorNumber].channelValue.filteredRawValue % MAX_LOOKUP_TABLE_SEGMENT;
-	 		q = ADC_LookUpTable[ADC[sensorNumber].channelConfig.sensorType][k];
-	 		m = (ADC_LookUpTable[ADC[sensorNumber].channelConfig.sensorType][k+1] - ADC_LookUpTable[ADC[sensorNumber].channelConfig.sensorType][k]) / MAX_LOOKUP_TABLE_SEGMENT;
-	 		ADC[sensorNumber].channelValue.actualCondValue = m * x + q;
+	 		k = ADC[sensorNumber].Status.filteredRawValue / MAX_LOOKUP_TABLE_SEGMENT;
+			x = ADC[sensorNumber].Status.filteredRawValue % MAX_LOOKUP_TABLE_SEGMENT;
+	 		q = ADC_LookUpTable[ADC[sensorNumber].Config.sensorType][k];
+	 		m = (ADC_LookUpTable[ADC[sensorNumber].Config.sensorType][k+1] - ADC_LookUpTable[ADC[sensorNumber].Config.sensorType][k]) / MAX_LOOKUP_TABLE_SEGMENT;
+	 		ADC[sensorNumber].Status.actualCondValue = m * x + q;
 		}
 	}
 }

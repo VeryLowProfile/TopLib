@@ -14,14 +14,26 @@
 //Generic
 
 //Configuration
-#define MAX_DI_INPUT 5
+#define MAX_DI_INPUT 16
 
 //Input Name
-#define DI_DEVICE_1 0
-#define DI_DEVICE_2 1
-#define DI_DEVICE_3 2
-#define DI_DEVICE_4 3
-#define DI_DEVICE_5 4
+#define SETTING_1 0
+#define SETTING_2 1
+#define PHASE_AL 2
+#define CHILLER_AL 3
+#define IN_0 4
+#define IN_1 5
+#define IN_2 6
+#define IN_3 7
+#define IN_5 8
+#define IN_6 9
+#define IN_7 10
+#define IN_8 11
+#define IN_9 12
+#define IN_10 13
+#define IN_11 14
+#define GATE_S 15
+
 
 /* Declarations -----------------------------------------------------------*/
 //Variables
@@ -54,7 +66,7 @@ struct DI_channel
 };
 
 //Functions
-void Scan_DI_Init(uint8_t diNumber, uint8_t port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles);
+void Scan_DI_Init(uint8_t diNumber, GPIO_TypeDef* port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles);
 void Scan_DI_Process_Number(uint8_t diNumber);
 void Scan_DI_Main(void);
 

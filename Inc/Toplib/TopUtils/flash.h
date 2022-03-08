@@ -70,8 +70,11 @@
 //		...  :						...    :				...						...    :
 //		PROP(MAX_NB_PROP):			PROP(MAX_NB_PROP):		...						PROP(MAX_NB_PROP):
 //
-//-----------------DEFINE-------------------------------------------------------//
+/* Includes ------------------------------------------------------------------*/
+#include "genericDefines.h"
+#include "stm32g4xx_hal.h"
 
+/* Defines -----------------------------------------------------------*/
 //FLASH ORGANIZATION DEFINE
 #define FLASH_BANK 					FLASH_BANK_1 														// It means that we use the first BANK of the FLASH 0x00000001U
 #define FLASH_BANK_ADDRESS			((FLASH_BANK == FLASH_BANK_1) ? 0x08000000 : 0x08080000) 			//switch between FLASH_BANKs

@@ -15,7 +15,7 @@
 struct DQ_channel DQ[MAX_DQ_OUT];
 
 /* Body -----------------------------------------------------------*/
-void Scan_DQ_Init(uint8_t dqNumber, uint8_t port, uint8_t pin)
+void Scan_DQ_Init(uint8_t dqNumber, GPIO_TypeDef* port, uint8_t pin)
 {
 	DQ[dqNumber].channelConfig.port = port;
 	DQ[dqNumber].channelConfig.pin = pin;

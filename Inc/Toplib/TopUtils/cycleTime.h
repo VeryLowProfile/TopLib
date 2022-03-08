@@ -16,9 +16,9 @@
 /* Declarations -----------------------------------------------------------*/
 typedef struct {
 
-	uint32_t start = 0;
-	uint32_t stop = 0;
-	uint32_t elapsed = 0;
+	uint32_t start;
+	uint32_t stop;
+	uint32_t elapsed;
 
 } cycleTime;
 

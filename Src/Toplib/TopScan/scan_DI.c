@@ -15,7 +15,7 @@
 struct DI_channel DI[MAX_DI_INPUT];
 
 /* Body -----------------------------------------------------------*/
-void Scan_DI_Init(uint8_t diNumber, uint8_t port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles)
+void Scan_DI_Init(uint8_t diNumber, GPIO_TypeDef* port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles)
 {
 	DI[diNumber].channelConfig.port = port;
 	DI[diNumber].channelConfig.pin = pin;

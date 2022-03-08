@@ -9,19 +9,12 @@
 /* Includes ------------------------------------------------------------------*/
 
 /* Defines -----------------------------------------------------------*/
-typedef uint8_t BOOL;
-
-#ifndef TRUE
-	#define TRUE            1
-#endif
-
-#ifndef FALSE
-	#define FALSE           0
-#endif
+#define TRUE 1
+#define FALSE 0
 
 //Generic
-#define NO 0;
-#define YES 1;
+#define NO 0
+#define YES 1
 
 //Clock
 #define SYS_CLOCK 170000000

@@ -65,7 +65,7 @@ struct ADC
 };
 
 /* Prototypes -----------------------------------------------------------*/
-void Scan_ADC_Init(uint8_t sensorNumber, uint_8 adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset);
+void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset);
 void Scan_ADC_Start(ADC_HandleTypeDef *hadc1, ADC_HandleTypeDef *hadc2);
 void Scan_ADC_Process_Channel(uint8_t sensorNumber);
 void Scan_ADC_Main(void);

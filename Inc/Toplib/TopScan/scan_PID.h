@@ -47,7 +47,7 @@ typedef struct {
 } PID;
 
 /* Prototypes -----------------------------------------------------------*/
-void Scan_PID_Init (int8_t PidNumber, float Kp, float Ki, float Kd, float OutLimMin, float OutLimMax, float intLimMin, float intLimMax, float T);
+void Scan_PID_Init (uint8_t PidNumber, float Kp, float Ki, float Kd, float OutLimMin, float OutLimMax, float intLimMin, float intLimMax, float T);
 void Scan_PID_Update_K (uint8_t PidNumber, float Kp, float Ki, float Kd);
-float Scan_PID_Process(PID *pid, float setpoint, float measurement);
+float Scan_PID_Process(uint8_t PidNumber, float setpoint, float ref);
 
