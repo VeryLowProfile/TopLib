@@ -156,8 +156,8 @@ typedef enum
 /* ----------------------- Proto ----------------------------------*/
 void MB_RTU_Enable ( void );
 void MB_RTU_Disable ( void );
-void MB_RTU_Idle_Callback(UART_HandleTypeDef *huart);
-void MB_RTU_Idle_Handler(UART_HandleTypeDef *huart);
+void MB_RTU_Idle_Callback(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma_usart_rx);
+void MB_RTU_Idle_Handler(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma_usart_rx);
 void MB_RTU_Poll( void );
 void MB_RTU_Get_Frame_Header();
 void MB_RTU_Get_CRC();

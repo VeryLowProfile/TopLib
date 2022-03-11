@@ -645,6 +645,7 @@ MB_TCP_Write_Single_Coil( void )
 			// Set the total lenght of the frame, this will be used by MB_TCP_Send(), in this case it is equal to received frame
 			TCP_Send_Lenght = MB_TCP_FUNC_WRITE_SINGLE_COIL_FRAME_LENGHT;
 
+            // Apply command or read information from working registers, also build the answer frame
             MB_TCP_Bit_Reg_Management(pointerToFrame, (uint8_t *) usRegCoilsBuf, 0, startAddress, Number,  MB_TCP_REG_COILS_START , MB_TCP_REG_COILS_SIZE, MB_TCP_REG_WRITE);
 
     	}
@@ -696,6 +697,7 @@ MB_TCP_Write_Multiple_Coils( void )
 			// Set the total lenght of the frame, this will be used by MB_TCP_Send(), in this case it is equal to received frame
 			TCP_Send_Lenght = MB_TCP_FUNC_WRITE_SINGLE_COIL_FRAME_LENGHT;
 
+            // Apply command or read information from working registers, also build the answer frame
             MB_TCP_Bit_Reg_Management(pointerToFrame, (uint8_t *) usRegCoilsBuf, 0, startAddress, Number,  MB_TCP_REG_COILS_START , MB_TCP_REG_COILS_SIZE, MB_TCP_REG_WRITE);
 
 		}
@@ -778,6 +780,7 @@ MB_TCP_Read_Discrete( void )
                 // Set the total lenght of the frame, this will be used by MB_TCP_Send()
                 TCP_Send_Lenght = MB_TCP_FUNC_ALL_PDU_HEADER_SIZE + answerDataLenght;
 
+                // Apply command or read information from working registers, also build the answer frame
                 MB_TCP_Bit_Reg_Management(pointerToFrame, (uint8_t *) usRegDiscreteBuf, 0, startAddress, Number,  MB_TCP_REG_DISCRETE_START , MB_TCP_REG_DISCRETE_SIZE, MB_TCP_REG_READ);
 
             }
@@ -853,6 +856,7 @@ MB_TCP_Read_Holding ( void )
                 // Set the total lenght of the frame, this will be used by MB_TCP_Send()
                 TCP_Send_Lenght = MB_TCP_FUNC_ALL_PDU_HEADER_SIZE + answerDataLenght;
 
+                // Apply command or read information from working registers, also build the answer frame
                 MB_TCP_Word_Reg_Management( pointerToFrame, (uint16_t *) usRegHoldingBuf, startAddress, Number, MB_TCP_REG_HOLDING_START, MB_TCP_REG_HOLDING_NREGS, MB_TCP_REG_READ );
 
             }
@@ -959,6 +963,7 @@ MB_TCP_Write_Multiple_Holdings( void )
 			// Set the total lenght of the frame, this will be used by MB_TCP_Send(), in this case it is equal to received frame
 			TCP_Send_Lenght = MB_TCP_FUNC_WRITE_SINGLE_REGISTER_FRAME_LENGHT;
 
+            // Apply command or read information from working registers, also build the answer frame
             MB_TCP_Word_Reg_Management( pointerToFrame, (uint16_t *) usRegHoldingBuf, startAddress, Number, MB_TCP_REG_HOLDING_START, MB_TCP_REG_HOLDING_NREGS, MB_TCP_REG_WRITE );
 
 		}
@@ -1029,6 +1034,7 @@ MB_TCP_Read_Input ( void )
                 // Set the total lenght of the frame, this will be used by MB_TCP_Send()
                 TCP_Send_Lenght = MB_TCP_FUNC_ALL_PDU_HEADER_SIZE + answerDataLenght;
 
+                // Apply command or read information from working registers, also build the answer frame
                 MB_TCP_Word_Reg_Management( pointerToFrame, (uint16_t *) usRegInputBuf, startAddress, Number, MB_TCP_REG_INPUT_START, MB_TCP_REG_INPUT_NREGS, MB_TCP_REG_READ );
 
             }
@@ -1052,7 +1058,7 @@ MB_TCP_Read_Input ( void )
 }
 
 /*******************************************************************************************************************************************************/
-/* ------------------------------------------------ NEW UNIV. FUNC TO BE TESTET -----------------------------------------------------------------------*/
+/* ---------------------------------------------------------------- BUFFER FUNC -----------------------------------------------------------------------*/
 /*******************************************************************************************************************************************************/
 
 //--> Write/Read bit status from/to working registers

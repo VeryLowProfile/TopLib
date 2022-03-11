@@ -25,11 +25,11 @@ uint32_t ADC_1_DMA_Buffer[MAX_DMA_BUFFER_LENGHT_CHANNEL][MAX_ADC_1_CHANNELS];
 uint32_t ADC_2_DMA_Buffer[MAX_DMA_BUFFER_LENGHT_CHANNEL][MAX_ADC_2_CHANNELS];
 
 /* Functions -----------------------------------------------------------*/
-void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset)
+void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcRank, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset)
 {
 	ADC[sensorNumber].Config.isUsed = YES;
 	ADC[sensorNumber].Config.adcNumber = adcNumber;
-	ADC[sensorNumber].Config.adcChannel = adcChannel;
+	ADC[sensorNumber].Config.adcRank = adcRank;
 	ADC[sensorNumber].Config.filterCostant = filterCostant;
 	ADC[sensorNumber].Config.linearOffset = linearOffset;
 	ADC[sensorNumber].Config.linearScaling = linearScaling;
@@ -39,12 +39,16 @@ void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcChannel, 
 void Scan_ADC_Start(ADC_HandleTypeDef *hadc1, ADC_HandleTypeDef *hadc2)
 {
 	//Start Sampling To DMA
-	if (HAL_ADC_Start_DMA(hadc1, (uint32_t*)ADC_1_DMA_Buffer, MAX_DMA_BUFFER_LENGHT_CHANNEL * MAX_ADC_1_CHANNELS) != HAL_OK)
+	int result = HAL_ADC_Start_DMA(hadc1, (uint32_t*)ADC_1_DMA_Buffer, MAX_DMA_BUFFER_LENGHT_CHANNEL * MAX_ADC_1_CHANNELS);
+
+	if (result != HAL_OK)
 	{
 		Error_Handler();
 	}
 
-	if (HAL_ADC_Start_DMA(hadc2, (uint32_t*)ADC_2_DMA_Buffer, MAX_DMA_BUFFER_LENGHT_CHANNEL * MAX_ADC_2_CHANNELS) != HAL_OK)
+	result = HAL_ADC_Start_DMA(hadc2, (uint32_t*)ADC_2_DMA_Buffer, MAX_DMA_BUFFER_LENGHT_CHANNEL * MAX_ADC_2_CHANNELS);
+
+	if (result != HAL_OK)
 	{
 		Error_Handler();
 	}
@@ -63,10 +67,10 @@ void Scan_ADC_Process_Channel(uint8_t sensorNumber)
 		for (i = 0; i < MAX_DMA_BUFFER_LENGHT_CHANNEL; i = i + ADC[sensorNumber].Config.filterCostant)
 		{
 			if (ADC[sensorNumber].Config.adcNumber == ADC_1){
-				ADC[sensorNumber].Status.filteredRawValue += ADC_1_DMA_Buffer[i][ADC[sensorNumber].Config.adcChannel];
+				ADC[sensorNumber].Status.filteredRawValue += ADC_1_DMA_Buffer[i][ADC[sensorNumber].Config.adcRank - 1];
 			}
 			else if (ADC[sensorNumber].Config.adcNumber == ADC_2) {
-				ADC[sensorNumber].Status.filteredRawValue += ADC_2_DMA_Buffer[i][ADC[sensorNumber].Config.adcChannel];
+				ADC[sensorNumber].Status.filteredRawValue += ADC_2_DMA_Buffer[i][ADC[sensorNumber].Config.adcRank - 1];
 			}
 			ADC[sensorNumber].Status.sampleNumber++;
 		}

@@ -15,9 +15,21 @@
 #define MAX_DQ_OUT 3
 
 //Output Name
-#define DQ_0 0
-#define DQ_1 1
-#define DQ_2 2
+#define REL_0 0
+#define REL_1 1
+#define REL_2 2
+#define REL_3 3
+#define REL_4 4
+#define REL_5 5
+#define REL_6 6
+#define REL_7 7
+#define REL_8 8
+#define REL_9 9
+#define REL_10 10
+#define REL_11 11
+#define BUZZER 12
+#define LOCK 13
+
 
 /* Declarations -----------------------------------------------------------*/
 //Variables

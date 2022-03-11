@@ -32,7 +32,7 @@
 #define IN_9 12
 #define IN_10 13
 #define IN_11 14
-#define GATE_S 15
+#define IGBT_T 15
 
 
 /* Declarations -----------------------------------------------------------*/
@@ -66,7 +66,7 @@ struct DI_channel
 };
 
 //Functions
-void Scan_DI_Init(uint8_t diNumber, GPIO_TypeDef* port, uint8_t pin, uint8_t isDebounce, uint8_t debounceCycles);
+void Scan_DI_Init(uint8_t diNumber, GPIO_TypeDef* port, uint16_t pin, uint8_t isDebounce, uint8_t debounceCycles);
 void Scan_DI_Process_Number(uint8_t diNumber);
 void Scan_DI_Main(void);
 

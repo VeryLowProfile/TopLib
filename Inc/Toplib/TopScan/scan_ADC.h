@@ -13,7 +13,7 @@
 /* Defines -----------------------------------------------------------*/
 //Configuration
 #define MAX_ADC 2
-#define MAX_ADC_1_CHANNELS 2
+#define MAX_ADC_1_CHANNELS 3
 #define MAX_ADC_2_CHANNELS 2
 #define MAX_DMA_BUFFER_LENGHT_CHANNEL 16
 #define MAX_FILTER_COSTANT 10
@@ -32,10 +32,11 @@
 #define ADC_2 2
 
 //Input Name
-#define ADC_1_SENSOR_5 0
-#define ADC_1_SENSOR_8 1
-#define ADC_2_SENSOR_3 2
-#define ADC_2_SENSOR_4 3
+#define TEMP_SCHEDA 0
+#define VAC_UP 1
+#define VAC_DOWN 2
+#define TC_1 3
+#define IDC 4
 
 /* Declarations -----------------------------------------------------------*/
 //Variables
@@ -43,7 +44,7 @@ struct ADC_Config
 {
 	uint8_t isUsed;
 	uint8_t adcNumber;
-	uint8_t adcChannel;
+	uint8_t adcRank;
 	uint8_t sensorType;
 	uint8_t filterCostant;
 	float linearScaling;
@@ -65,7 +66,7 @@ struct ADC
 };
 
 /* Prototypes -----------------------------------------------------------*/
-void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcChannel, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset);
+void Scan_ADC_Init(uint8_t sensorNumber, uint8_t adcNumber, uint8_t adcRank, uint8_t filterCostant, uint8_t sensorType, float linearScaling, float linearOffset);
 void Scan_ADC_Start(ADC_HandleTypeDef *hadc1, ADC_HandleTypeDef *hadc2);
 void Scan_ADC_Process_Channel(uint8_t sensorNumber);
 void Scan_ADC_Main(void);

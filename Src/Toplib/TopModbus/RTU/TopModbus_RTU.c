@@ -18,8 +18,8 @@
 #include "TopModbus_RTU.h"
 
 /* ----------------------- Extern variables ---------------------------------*/
-extern UART_HandleTypeDef huart1;
-extern DMA_HandleTypeDef hdma_usart1_rx;
+extern UART_HandleTypeDef huart2;
+extern DMA_HandleTypeDef hdma_usart2_rx;
 
 /* ----------------------- Static variables ---------------------------------*/
 enum
@@ -95,8 +95,8 @@ MB_RTU_Init ( void )
 
 	if (MB_RTU_State == STATE_ENABLED)
 	{
-		__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
-		HAL_UART_Receive_DMA(&huart1, (uint8_t*)RTU_Receive_Buf, MB_RTU_BUF_SIZE);
+		__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);
+		HAL_UART_Receive_DMA(&huart2, (uint8_t*)RTU_Receive_Buf, MB_RTU_BUF_SIZE);
 
 		MB_RTU_State = STATE_INITIALIZED;
 	}
@@ -111,10 +111,10 @@ MB_RTU_Init ( void )
 
 /* ------------------------ USART Functions ----------------------------------*/
 //--> Callback Function For Idle Interrupt
-void MB_RTU_Idle_Callback(UART_HandleTypeDef *huart)
+void MB_RTU_Idle_Callback(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma_usart_rx)
 {
 	//Stop this DMA transmission
-	HAL_UART_DMAStop(&huart1);
+	HAL_UART_DMAStop(huart);
 
 	//Receive the Modbus frame
 	if (MB_RTU_State == STATE_INITIALIZED)
@@ -122,7 +122,7 @@ void MB_RTU_Idle_Callback(UART_HandleTypeDef *huart)
 		if (!MB_Busy)
 		{
 			//Calculate the length of the received data
-			RTU_Receive_Lenght  = MB_RTU_BUF_SIZE - __HAL_DMA_GET_COUNTER(&hdma_usart1_rx);
+			RTU_Receive_Lenght  = MB_RTU_BUF_SIZE - __HAL_DMA_GET_COUNTER(hdma_usart_rx);
 
 			//Copy Received Buffer To Working Buffer
 			memcpy((uint8_t*)RTU_Working_Buf, (uint8_t*)RTU_Receive_Buf, MB_RTU_BUF_SIZE);
@@ -142,19 +142,19 @@ void MB_RTU_Idle_Callback(UART_HandleTypeDef *huart)
 	memset(RTU_Receive_Buf, 0, MB_RTU_BUF_SIZE);
 
 	//Restart to start DMA transmission of 255 bytes of data at a time
-	HAL_UART_Receive_DMA(&huart1, (uint8_t*)RTU_Receive_Buf, MB_RTU_BUF_SIZE);
+	HAL_UART_Receive_DMA(huart, (uint8_t*)RTU_Receive_Buf, MB_RTU_BUF_SIZE);
 }
 
 //--> Callback Function For Idle Interrupt
-void MB_RTU_Idle_Handler(UART_HandleTypeDef *huart)
+void MB_RTU_Idle_Handler(UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma_usart_rx)
  {
-     if(USART1 == huart1.Instance)                                   //Determine whether it is serial port 1
+     if(USART1 == huart->Instance)                                 //Determine whether it is serial port 1
      {
-         if(RESET != __HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE))   //Judging whether it is idle interruption
+         if(RESET != __HAL_UART_GET_FLAG(huart, UART_FLAG_IDLE))   //Judging whether it is idle interruption
          {
-             __HAL_UART_CLEAR_IDLEFLAG(&huart1);                     //Clear idle interrupt sign (otherwise it will continue to enter interrupt)
+             __HAL_UART_CLEAR_IDLEFLAG(huart);                     //Clear idle interrupt sign (otherwise it will continue to enter interrupt)
 
-             MB_RTU_Idle_Callback(huart);                            //Call interrupt handler
+             MB_RTU_Idle_Callback(huart, hdma_usart_rx);                          //Call interrupt handler
          }
      }
  }
@@ -172,7 +172,7 @@ MB_RTU_Send( void )
 	memset(RTU_Working_Buf, 0, MB_RTU_BUF_SIZE);
 
 	//Send Buffer To UART
-	if (HAL_UART_Transmit(&huart1, (uint8_t*)RTU_Send_Buf, RTU_Send_Lenght, HAL_MAX_DELAY) != HAL_OK)
+	if (HAL_UART_Transmit(&huart2, (uint8_t*)RTU_Send_Buf, RTU_Send_Lenght, HAL_MAX_DELAY) != HAL_OK)
 	{
 		errorCode = MB_RTU_SEND_ERROR;
 	}
